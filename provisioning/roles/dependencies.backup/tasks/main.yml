@@ -1,0 +1,65 @@
+---
+# install ansible
+- apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - build-essential
+    - python-dev
+    - python-pip
+    - python-setuptools
+    - python-pkg-resources
+
+- pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - setuptools
+    - ansible
+
+- include: ansible_installation_facts.yml
+
+# create pgpass file to access postgress /wo password
+- template:
+    src: pgpass.j2
+    dest: "{{ home_directory }}/.pgpass"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0600
+
+- name: create backup directory
+  file:
+    path: "{{ backups_directory }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- template:
+    src: backup.json.j2
+    dest: "{{ backup_config_path }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- git:
+    repo: "{{ backup_repository }}"
+    dest: "{{ provisioning_directory }}"
+    version: "master"
+    bare: no
+    update: yes
+    accept_hostkey: yes
+
+- file:
+    path: "{{ provisioning_directory }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- cron:
+    hour: "0"
+    minute: "0"
+    state: present
+    user: "{{ user }}"
+    job: "cd {{ provisioning_directory }} && {{ ansible_playbook }} -i hosts ./backup.yml -e @{{ backups_shared_directory }}/backup.config.json"
+    name: "create backup archive"
+
+- include: external_backup.yml
+  when: ansible_architecture == 'armv6l' and ansible_devices.has_key('sda')

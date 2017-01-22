@@ -1,0 +1,13 @@
+---
+- cron:
+    day: "*"
+    month: "*"
+    weekday: "*"
+    minute: "{{ item.minute }}"
+    hour: "{{ item.hour }}"
+    state: present
+    user: "{{ user }}"
+    job: "{{ item.job }}"
+    name: "{{ item.name }}"
+  with_items:
+    - "{{ jobs }}"

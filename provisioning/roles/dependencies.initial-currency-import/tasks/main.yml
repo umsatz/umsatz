@@ -1,0 +1,5 @@
+---
+- name: download euro-hist.xml
+  get_url:
+    url: http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml
+    dest: "{{ shared_path }}/data/euro-hist.xml"

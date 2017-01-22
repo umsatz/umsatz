@@ -1,0 +1,17 @@
+---
+- name: update available sites
+  template:
+    src: umsatz.j2
+    dest: /etc/nginx/sites-available/umsatz
+    owner: root
+    group: root
+  notify: reload nginx
+
+- name: symlink umsatz to enabled sites
+  file:
+    src: /etc/nginx/sites-available/umsatz
+    dest: /etc/nginx/sites-enabled/umsatz
+    state: link
+    owner: root
+    group: root
+  notify: reload nginx

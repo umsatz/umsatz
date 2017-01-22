@@ -1,0 +1,30 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "dependencies": {
+    "almond": "~0.3.1",
+    "sass-bootstrap": "3.0.2",
+    "jquery": "2.1.3",
+    "requirejs": "2.1.16",
+    "requirejs-text": "2.0.14",
+    "backbone": "1.1.2",
+    "underscore-amd": "1.5.2",
+    "modernizr": "2.8.3",
+    "backbone.marionette": "2.4.1",
+    "pdfjs-dist": "1.0.1196",
+    "backbone.radio": "0.9.0",
+    "foundation": "5.4.7",
+    "typeahead.js": "0.10.5",
+    "i18next": "1.7.7",
+    "foundation-icon-fonts": "git@github.com:zurb/foundation-icon-fonts",
+    "ractive": "0.7.3",
+    "ractive-adaptors-backbone": "0.2.0",
+    "requirejs-ractive": "0.1.8",
+    "accounting": "0.3.2"
+  },
+  "devDependencies": {},
+  "directory": "bower_components",
+  "resolutions": {
+    "jquery": ">= 2.0.0"
+  }
+}

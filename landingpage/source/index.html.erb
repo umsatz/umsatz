@@ -1,0 +1,122 @@
+---
+title: selfhosted oss accounting
+---
+
+<section itemscope itemtype="http://schema.org/SoftwareApplication">
+  <nav class="top-bar" data-topbar role="navigation">
+    <div class="row header">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="/">umsatz</a></h1>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        <ul class="left" id="nav">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#screenshots">Screenshots</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </section>
+    </div>
+  </nav>
+
+
+  <div class="row">
+    <div id="features" class="large-12 columns scrollto">
+      <h1>Open source accounting software</h1>
+
+      <p>
+        <span itemprop="name">umsatz</span>is a <span itemprop="description">small, self-contained bookkeeping software</span> aimed mostly at freelancers and small businesses.
+      </p>
+
+      <p>The current version of umsatz has the following features:</p>
+
+      <ul class="features">
+        <li>support for double-entry bookkeeping</li>
+        <li>support for multiple currencies</li>
+        <li>support for multiple languages</li>
+        <li>support for arbitrary accounts</li>
+        <li>support for arbitrary fiscal periods</li>
+        <li>support for quick search and filter</li>
+        <li>support for pdf exports for your accountant</li>
+        <li>automatic backups to multiple attached devices</li>
+        <li>secured with two factor authentication (password + totp)</li>
+      </ul>
+
+      <p>The following features are planned for future version, while no deadline is given:</p>
+
+      <ul>
+        <li>full text search (even including text from your attachments)</li>
+        <li>automatic bank account syncing (based on aqbanking)</li>
+        <li>detailed account analytics</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="architecture" class="large-12 columns scrollto">
+      <h1>Secure, self-hosted &amp; open source</h1>
+
+      <p>umsatz was written with the assumption in mind that its users want to have complete control over where their accounting informations is stored.</p>
+
+      <p>Since the original aim was to run umsatz on a raspberry pi we went to great length to optimize it for that scenario. The general architecture consists of multiple micro services all written in go, and a single page application displaying all the data.</p>
+
+      <ul>
+        <li>runs on any debian based *nix</li>
+        <li>optimized for raspberry pi</li>
+        <li>HTTP backends written in <a href="http://golang.org/" rel="nofollow">go</a>, SPA-frontend in JavaScript</li>
+        <li>100% automatic deployment with <a href="http://www.ansible.com/" rel="nofollow">ansible</a></li>
+        <li>support for i18n using <a href="http://i18next.com" rel="nofollow">i18next</a></li>
+        <li>source code on <a href="https://github.com/umsatz" rel="nofollow">github.com</a></li>
+      </ul>
+
+      <p>All the code is open source - if you find it useful and want modifications feel free to send a pull request.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="screenshots" class="large-12 columns scrollto">
+      <h1>Screenshots</h1>
+
+      <p>Here are some screenshots of umsatz in action.</p>
+
+      <ul class="small-block-grid-3">
+        <li><img itemprop="image" src="/images/register.png"></li>
+        <li><img itemprop="image" src="/images/login.png"></li>
+        <li><img itemprop="image" src="/images/dashboard.png"></li>
+        <li><img itemprop="image" src="/images/positions.png"></li>
+        <li><img itemprop="image" src="/images/positions-new.png"></li>
+      </ul>
+
+      <p>please note that the screenshots might not display the most up-to-date version of umsatz.</p>
+
+      <p>if you like to get access to an online demo please <a href="mailto:nicolai86(at)me(dot)com?subject=demo of umsatz" class="button small">get in touch</a></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="contact" class="large-12 columns scrollto">
+      <h1>contact</h1>
+
+      <p>If you are interested in buying a pre-provisioned raspberry pi you can contact me here &amp; I'll send you an update including pricing as soon as it's ready for prime time.</p>
+
+      <a href="mailto:nicolai86(at)me(dot)com?subject=pre-build umsatz" class="button small">contact</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="row">
+      <div class="large-12 columns">
+        Copyright © 2013-2014 <a href="http://nicolai86.eu">
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span itemprop="name">
+              Raphael Randschau
+            </span>
+          </span>
+        </a>.
+      </div>
+    </div>
+  </footer>
+</section>

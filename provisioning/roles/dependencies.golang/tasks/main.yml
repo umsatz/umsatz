@@ -1,0 +1,36 @@
+---
+- action: gpm_facts
+
+- name: install gpm
+  git:
+    repo: https://github.com/pote/gpm.git
+    dest: /tmp/gpm
+    version: "v{{ gpm_version }}"
+  when: "not gpm.installed or gpm.version != '{{ gpm_version }}'"
+
+- shell: chdir=/tmp/gpm ./configure
+  when: "not gpm.installed or gpm.version != '{{ gpm_version }}'"
+
+- shell: chdir=/tmp/gpm make install
+  when: "not gpm.installed or gpm.version != '{{ gpm_version }}'"
+
+- file:
+    path: "{{ home_directory }}/go"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- action: go_facts
+
+- name: setup $GOPATH
+  lineinfile:
+    dest: "{{ home_directory }}/.bashrc"
+    insertafter: BOF
+    regexp: ^{{ item.regexp }}
+    line: "{{ item.line }}"
+    state: present
+  with_items:
+    - { regexp: "export PATH=.GOPATH", line: "export PATH=$GOPATH/bin:$PATH" }
+    - { regexp: "export GOROOT=", line: "export GOROOT={{ go.root }}" }
+    - { regexp: "export GOPATH=", line: "export GOPATH={{ go_path }}" }
+    - { regexp: "export PATH.+go.bin", line: "export PATH=$PATH:/usr/local/go/bin" }

@@ -1,0 +1,32 @@
+---
+# format /dev/sda1 as ext4 unless it is mounted
+- filesystem:
+    fstype: ext4
+    dev: /dev/sda1
+    force: yes
+  with_items: ansible_mounts
+  when: item.device != '/dev/sda1'
+
+# create /mnt/backups with proper permissions
+- file:
+    path: /mnt
+    owner: root
+    group: root
+    mode: 0755
+
+- file:
+    path: /mnt/backups
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0755
+    state: directory
+
+# mount /dev/sda1 to /mnt/backups
+- mount:
+    name: /mnt/backups
+    src: /dev/sda1
+    fstype: ext4
+    state: present
+    opts: defaults,noatime
+  with_items: ansible_mounts
+  when: item.device != '/dev/sda1'

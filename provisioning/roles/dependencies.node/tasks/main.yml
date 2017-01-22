@@ -1,0 +1,78 @@
+---
+# x86_64 installation
+- apt_repository:
+    repo: ppa:chris-lea/node.js
+    state: present
+  when: ansible_architecture == 'x86_64'
+
+- apt:
+    pkg: nodejs
+    state: present
+    update_cache: yes
+  when: ansible_architecture == 'x86_64'
+
+- npm:
+    global: yes
+    name: "{{ item }}"
+    production: yes
+    state: present
+  with_items:
+    - bower
+    - grunt-cli
+    - grunt
+  when: ansible_architecture == 'x86_64'
+
+# armv6 installation
+- action: node_facts
+  when: ansible_architecture == 'armv6l'
+
+- file:
+    path: /opt/node
+    state: directory
+    recurse: yes
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- get_url:
+    url: http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-arm-pi.tar.gz
+    dest: /tmp/node-v0.10.26-linux-arm-pi.tar.gz
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- shell: chdir=/tmp tar xvzf node-v0.10.26-linux-arm-pi.tar.gz
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- shell: chdir=/tmp cp -r node-v0.10.26-linux-arm-pi/* /opt/node
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- file:
+    path: /etc/profile.d/node.sh
+    state: touch
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- lineinfile:
+    dest: /etc/profile.d/node.sh
+    insertafter: BOF
+    regexp: node\/bin
+    line: "export PATH=$PATH:/opt/node/bin"
+    state: present
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- name: update $PATH
+  lineinfile:
+    dest: "{{ home_directory }}/.bashrc"
+    insertafter: BOF
+    regexp: ^export PATH.+node.bin
+    line: "export PATH=$PATH:/opt/node/bin"
+    state: present
+  when: ansible_architecture == 'armv6l' and not(node.installed)
+
+- npm:
+    global: yes
+    name: "{{ item }}"
+    production: yes
+    state: present
+    executable: /opt/node/bin/npm
+  with_items:
+    - bower
+    - grunt-cli
+    - grunt
+  when: ansible_architecture == 'armv6l'

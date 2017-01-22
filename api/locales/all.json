@@ -1,0 +1,14 @@
+{
+  "positions.attribute.accountCodeFrom": {
+    "en": "'account from'",
+    "de": "'Konto von'"
+  },
+  "validations.attribute.inclusion": {
+    "en": "must be in (%s).",
+    "de": "muss in (%s) liegen."
+  },
+  "validations.attribute.missing": {
+    "en": "must be present.",
+    "de": "muss angegeben werden."
+  }
+}

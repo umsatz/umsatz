@@ -1,0 +1,154 @@
+{
+  "accountOverview": {
+    "headline": "Overview for %{name}"
+  },
+
+  "or": "or",
+  "actions": {
+    "save": "Save",
+    "cancel": "cancel"
+  },
+
+  "settings": {
+    "headline": "Settings",
+    "submit": "Save"
+  },
+
+  "login": {
+    "headline": "Login for %{company}",
+    "submit": "Log-In",
+    "password": "Password",
+    "totp": "OTP Token"
+  },
+
+  "exports": {
+    "headline": "PDF-Export for %{name}"
+  },
+
+  "signup": {
+    "headline": "Signup",
+    "information": "You need to register with your raspberry pi in order to use umsatz.",
+    "totp_information": "To finish your registration you need to enter your first OTP-Token.",
+
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "company": "Company",
+    "tax_id": "Tax ID",
+    "email": "E-Mail",
+    "password": "Password",
+
+    "submit": "Signup"
+  },
+
+  "fiscalPeriods": {
+    "selector": "Booking periods",
+
+    "overview": {
+      "headline": "Booking periods",
+      "actions": {
+        "new": "New booking period",
+        "export": "Export"
+      },
+      "listing": {
+        "name":          "Name",
+        "startsAt":      "Start",
+        "endsAt":        "End",
+        "archived":      "Archived",
+        "positionCount": "# Positions",
+        "totalExpense":  "∑ Income",
+        "totalIncome":   "∑ Expense"
+      }
+    },
+
+    "headline": "Positions for %{name}",
+
+    "edit": {
+      "title": "Booking period"
+    },
+
+    "attributes": {
+      "name": "Name",
+      "startsAt": "Start",
+      "endsAt": "End",
+      "archived": "Archived"
+    }
+  },
+
+  "backups": {
+    "headline": "Backups",
+    "actions": {
+      "new": "Create backup"
+    },
+    "listing": {
+      "createdAt": "Created at"
+    }
+  },
+
+  "positions": {
+    "overview": {
+      "actions": {
+        "new": "Create new position"
+      },
+      "listing": {
+        "invoiceDate": "Invoice date",
+        "bookingDate": "Booking date",
+        "invoiceNumber": "Invoice number",
+        "description": "Description",
+        "account":     "Account",
+        "totalAmount": "Amount",
+        "totalVatAmount": "VAT",
+        "income": "Income",
+        "expenses": "Expense"
+      }
+    },
+
+    "attributes": {
+      "invoiceNumber": "Invoice number",
+      "invoiceDate": "Invoice date",
+      "bookingDate": "Booking date",
+      "accountCodeFrom": "Account from",
+      "accountCodeTo": "Account to",
+      "description": "Description",
+      "type": "Kind",
+      "totalAmount": "Amount",
+      "tax": "VAT",
+      "attachment": "Attachment"
+    },
+
+    "tax": {
+      "notApplicable": "not applicable"
+    },
+
+    "exchangeRate": "Conversion rate",
+
+    "type": {
+      "income": "Income",
+      "expense": "Expense"
+    }
+  },
+
+  "date": {
+    "month_abbrs": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "May",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Oct",
+      "11": "Nov",
+      "12": "Dec"
+    }
+  },
+
+  "language": {
+    "selector": "Language",
+    "options": {
+      "de": "German",
+      "en": "English"
+    }
+  }
+}

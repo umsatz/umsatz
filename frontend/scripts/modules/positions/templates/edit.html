@@ -1,0 +1,142 @@
+<form class="fiscal-item" on-submit="save">
+
+  <div class="row">
+    <div class="large-12 columns">
+      <h2>Buchung</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-4 columns">
+      <label for="typeExpense">{{ t('positions.attributes.type') }} *</label>
+      <input type="radio" name="{{ position.type }}" value="expense" id="typeExpense">
+      <label for="typeExpense">{{ t('positions.type.expense') }}</label>
+      <input type="radio" name="{{ position.type }}" value="income" id="typeIncome">
+      <label for="typeIncome">{{ t('positions.type.income') }}</label>
+    </div>
+
+    <div class="large-8 columns">
+      <div class="row collapsed">
+        <div class="large-5 columns {{#position.hasErrorOn('accountCodeFrom')}}error{{/position}}">
+          <label>{{ t('positions.attributes.accountCodeFrom') }}</label>
+          <account-picker account="{{ position.accountCodeFrom }}" label="{{ accountLabelFrom }}"></account-picker>
+          {{#position.hasErrorOn('accountCodeFrom')}}
+          <small class="error">{{ position.errors.accountCodeFrom }}</small>
+          {{/position}}
+        </div>
+        <div class="large-2 columns">
+          <span class="account-direction">
+            ->
+          </span>
+        </div>
+        <div class="large-5 columns {{#position.hasErrorOn('accountCodeTo')}}error{{/position}}">
+          <label>{{ t('positions.attributes.accountCodeTo') }}</label>
+          <account-picker account="{{ position.accountCodeTo }}" label="{{ accountLabelTo }}"></account-picker>
+          {{#position.hasErrorOn('accountCodeTo')}}
+          <small class="error">{{ position.errors.accountCodeTo }}</small>
+          {{/position}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-4 columns {{#position.hasErrorOn('invoiceNumber')}}error{{/position}}">
+      <label for="invoiceNumber">{{ t('positions.attributes.invoiceNumber') }}</label>
+      <input type="text" id="invoiceNumber" placeholder="z.b. 2014-01-01" value="{{ position.invoiceNumber }}">
+      {{#position.hasErrorOn('invoiceNumber')}}
+      <small class="error">{{ position.errors.invoiceNumber }}</small>
+      {{/position}}
+    </div>
+    <div class="large-4 columns {{#position.hasErrorOn('invoiceDate')}}error{{/position}}">
+      <label for="invoiceDate">{{ t('positions.attributes.invoiceDate') }}</label>
+      <input type="date" id="invoiceDate" value="{{ position.invoiceDate }}">
+      {{#position.hasErrorOn('invoiceDate')}}
+      <small class="error">{{ position.errors.invoiceDate }}</small>
+      {{/position}}
+    </div>
+    <div class="large-4 columns">
+    <label for="bookingDate">{{ t('positions.attributes.bookingDate') }}</label>
+      <input type="date" id="bookingDate" value="{{ position.bookingDate }}">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <label for="description">{{ t('positions.attributes.description') }}</label>
+      <input type="text" id="description" value="{{ position.description }}">
+      <hr>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-3 columns">
+      <div class="row collapse">
+        <label for="totalAmount">{{ t('positions.attributes.totalAmount') }}</label>
+        <div class="small-8 columns">
+          <input type="text" id="totalAmount" placeholder="Betrag" value="{{ totalAmount }}">
+        </div>
+        <div class="small-4 columns">
+          <select class="postfix" value="{{ position.currency }}">
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="large-2 columns">
+    {{#position.currency != 'EUR'}}
+      <label>{{ t('positions.exchangeRate') }}</label>
+      <span>
+        {{ exchangeRate }} ≈
+        <currency amountCents="{{ convertedTotalAmountCents }}" currency="EUR"/>
+      </span>
+    {{/position}}
+    </div>
+    <div class="large-3 columns">
+      <label for="noTax">{{ t('positions.attributes.tax') }}</label>
+      <input type="radio" id="noTax" name="{{ position.tax }}" value="0">
+      <label for="noTax">{{ t('positions.tax.notApplicable') }}</label>
+      <input type="radio" id="reducedTax" name="{{ position.tax }}" value="7">
+      <label for="reducedTax">7 %</label>
+      <input type="radio" id="regularTax" name="{{ position.tax }}" value="19">
+      <label for="regularTax">19 %</label>
+    </div>
+    <div class="large-4 columns">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <hr>
+      <div class="row">
+        <div class="large-6 columns">
+
+          <label for="attachment">{{ t('positions.attributes.attachment') }}</label>
+          <input type="file" id="attachment" name="attachment" value="{{ position.attachment }}">
+        </div>
+
+        <div class="large-6 columns">
+          {{#position.attachmentPath}}
+          <a href="{{ position.attachmentPath }}">Download</a>
+
+          {{#previewable}}
+          <div id="viewerContainer" style="border: 1px solid black; height: 400px; overflow: scroll;">
+            <div id="viewer" class="viewer"></div>
+          </div>
+          {{/previewable}}
+          {{/position.attachmentPath}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="form-actions">
+        <input class="tiny button" type="submit" value="{{ t('actions.save') }}"> {{ t('or') }} <a on-click="cancel" class="alert">{{ t('actions.cancel') }}</a>
+      </div>
+    </div>
+  </div>
+</form>

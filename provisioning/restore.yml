@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+    - name: create restore directory
+      file:
+        path: "{{ unarchive_directory }}"
+        state: directory
+
+    - name: unarchive backup
+      unarchive:
+        src: "{{ archive }}"
+        dest: "{{ unarchive_directory }}"
+
+    - name: ensure required files present
+      file:
+        path: "{{ unarchive_directory }}/{{ item }}"
+        state: file
+      with_items:
+        - "{{ database_archive }}"
+        - "{{ upload_archive }}"
+
+    - name: unarchive database dump
+      unarchive:
+        src: "{{ unarchive_directory }}/{{ database_archive }}"
+        dest: "{{ unarchive_directory }}"
+
+    - name: ensure required files present
+      file:
+        path: "{{ unarchive_directory }}/{{ database_dump }}"
+        state: file
+
+    - name: restore database
+      command: chdir="{{ unarchive_directory }}" {{ psql }} -U {{ database_user }} {{ database }} -f {{ unarchive_directory }}/{{ database_dump }}
+
+    - name: unarchive uploads
+      unarchive:
+        src: "{{ unarchive_directory }}/{{ upload_archive }}"
+        dest: "{{ upload_directory }}"
+
+    - name: remove restore directory
+      file:
+        path: "{{ unarchive_directory }}"
+        state: absent

@@ -1,0 +1,192 @@
+<html>
+  <head>
+    <style>
+    body {
+      background: white;
+      color: black;
+      font-family: Verdana;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+    @page {
+      size: A4;
+      margin: 1cm;
+    }
+
+    // frontmatter
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    ul.wide li {
+      padding-bottom: 15px;
+    }
+    ul li {
+      margin: 0;
+      padding: 0;
+    }
+    .label {
+      min-width: 100px;
+      display: inline-block;
+    }
+    .frontmatter .label {
+      min-width: 240px;
+    }
+    .small {
+      font-weight: normal;
+      font-size: 0.75em;
+    }
+    table {
+      width: 100%;
+    }
+    @page {
+      @bottom-left {
+        content: "Seite " counter(page) " von " counter(pages);
+      }
+     }
+    </style>
+  </head>
+  <body>
+    {{$period := .fiscalPeriod}}
+    <div class="outer">
+      <div class="inner">
+        <div class="frontmatter">
+          <h2>{{.Company}}</h2>
+          <ul class="wide" style="padding-bottom: 100px; padding-top: 30px;">
+            <li><b class="label">Steuernummer:</b><span>{{.TaxID}}</span></li>
+            <li><b class="label">Abrechnungszeitraum:</b><span>{{dateFormat .StartsAt}} - {{dateFormat .EndsAt}}</span></li>
+            <li><b class="label">Erzeugt Am:</b><span>{{dateFormat now}}</span></li>
+          </ul>
+
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Ausgaben<br>
+                  <span class="small">(mit Steuern)</span>
+                </th>
+                <th>
+                  Ausgaben<br>
+                  <span class="small">(ohne Steuern)</span>
+                </th>
+                <th>
+                  Einnahmen<br>
+                  <span class="small">(mit Steuern)</span>
+                </th>
+                <th>
+                  Einnahmen<br>
+                  <span class="small">(ohne Steuern)</span>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr style="height: 40px; vertical-align: top;">
+                {{with $period.Expenses}}
+                <td>{{currency .TotalWithTax "EUR"}}</td>
+                <td>{{currency .TotalWithoutTax "EUR"}}</td>
+                {{end}}
+
+                {{with $period.Incomes}}
+                <td>{{currency .TotalWithTax "EUR"}}</td>
+                <td>{{currency .TotalWithoutTax "EUR"}}</td>
+                {{end}}
+              </tr>
+            </tbody>
+            <thead>
+              <tr>
+                <th colspan="2"></th>
+                <th>Saldo<br><span class="small">(mit Steuern)</span></th>
+                <th>Saldo<br><span class="small">(ohne Steuern)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2"></td>
+                <td>{{currency $period.TotalWithTax "EUR"}}</td>
+                <td>{{currency $period.TotalWithoutTax "EUR"}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="page-break"></div>
+
+        <div class="accounts">
+          <h2 style="padding-bottom: 30px;">Grundlage Gewinnermittlung</h2>
+
+          {{range .UsedAccounts}}
+          <p>
+            <b class="label" style="font-size: 0.9em;">Konto:</b><span>{{.Label}} ({{.Code}})</span>
+            <table>
+              <thead>
+                <tr style="font-size: 0.9em;">
+                  <th>Nr.</th>
+                  <th>Datum</th>
+                  <th>Bezeichnung</th>
+                  <th>Belegnummer</th>
+                  <th>Netto</th>
+                  <th>Satz</th>
+                  <th>Summe</th>
+                </tr>
+              </thead>
+              <tbody style="font-size: 0.75em;">
+                {{range ($period.PositionsWithAccount .Code)}}
+                <tr>
+                  <td>{{.ID}}</td>
+                  <td>{{shortDateFormat .InvoiceDate}}</td>
+                  <td>{{.Description}}</td>
+                  <td>{{.InvoiceNumber}}</td>
+                  <td style="text-align: right;">{{.Sign}}{{currency .TotalWithoutTax "EUR"}}</td>
+                  <td style="text-align: right;">{{if ne .Tax 0}}{{.Tax}}%{{end}}</td>
+                  <td style="text-align: right;">{{.Sign}}{{currency .TotalAmountCents "EUR"}}</td>
+                </tr>
+                {{end}}
+              </tbody>
+            </table>
+            <div style="text-align: right; font-size: 0.75em;">
+              <span style="padding: 5px; border-top: 1px solid #000;">{{$period.Sign .Code}}{{currency ($period.TotalAmountFromAccount .Code) "EUR"}}</span>
+            </div>
+          </p>
+          {{end}}
+        </div>
+
+        <div class="page-break"></div>
+
+        <h2 style="padding-bottom: 30px;">Übersicht Abrechnungen</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Nr.</th>
+              <th>Datum</th>
+              <th>Konto</th>
+              <th>Beschreibung</th>
+              <th>Satz</th>
+              <th>Summe</th>
+              <th>Originalbetrag</th>
+            </tr>
+          </thead>
+          <tbody style="font-size: 0.75em;">
+            {{range .Positions}}
+            <tr>
+              {{ $fromAcc := $period.AccountByCode .FromAccountCode }}
+              {{ $toAcc := $period.AccountByCode .ToAccountCode }}
+              <td>{{.ID}}</td>
+              <td>{{shortDateFormat .InvoiceDate}}</td>
+              <td>{{.ToAccountCode}}</td>
+              <td>{{.Description}}</td>
+              <td style="text-align: right;">{{if ne .Tax 0}}{{.Tax}}%{{end}}</td>
+              <td style="text-align: right;">{{.Sign}}{{currency .TotalAmountCents "EUR"}}</td>
+              <td style="text-align: right;">{{if ne .Currency "EUR"}}{{.Sign}}{{currency .OriginalTotalAmountCents .Currency}}{{end}}</td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </body>
+</html>

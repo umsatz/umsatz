@@ -1,0 +1,30 @@
+---
+- name: install supervisor
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+    - supervisor=3.0a8-1.1
+
+- name: start supervisor
+  service:
+    name: supervisor
+    state: started
+
+- name: allow sudo access to supervisorctl
+  lineinfile:
+    dest: "/etc/sudoers"
+    insertafter: EOF
+    regexp: "^{{ user }}"
+    line: "{{ user }} ALL=NOPASSWD: /usr/bin/supervisorctl"
+    state: present
+
+- name: ensure proper sudo permissions
+  shell: "chmod 4755 $(which sudo)"
+
+- template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/supervisord.conf
+    owner: root
+    group: root
+    mode: 0544

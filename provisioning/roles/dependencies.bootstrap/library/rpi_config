@@ -1,0 +1,46 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2014 Raphael Randschau <nicolai86@me.com>
+# see http://elinux.org/RPiconfig
+
+DOCUMENTATION = '''
+---
+module: rpi_config
+short_description: parse /boot/config.txt and make variables available
+'''
+
+import os
+import StringIO
+
+def gather_facts(module):
+    config = open('/boot/config.txt', 'r')
+
+    settings = dict()
+    for line in config:
+      if line.strip() == '':
+        continue
+
+      if line[0] == '#':
+        continue
+      parts = line.split('=')
+
+      settings[parts[0].strip()] = parts[1].strip()
+
+    return settings
+
+def main():
+    module = AnsibleModule(argument_spec = dict())
+
+    result = {}
+    result['changed'] = True
+    result['ansible_facts'] = {
+      'rpi_config': gather_facts(module)
+    }
+
+    module.exit_json(**result)
+
+# this is magic, see lib/ansible/module_common.py
+#<<INCLUDE_ANSIBLE_MODULE_COMMON>>
+
+main()

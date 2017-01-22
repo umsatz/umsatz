@@ -1,0 +1,47 @@
+span.twitter-typeahead {
+  width: 100%;
+}
+
+.typeahead, .tt-hint {
+  width: 574px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 1px solid #024e6a;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-top: -15px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 8px 20px;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.tt-suggestion + .tt-suggestion {
+  font-size: 14px;
+  border-top: 1px solid #ccc;
+}
+
+.twitter-typeahead .tt-suggestion.tt-cursor {
+  color: #03739c;
+}

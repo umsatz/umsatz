@@ -1,0 +1,51 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2014 Raphael Randschau <nicolai86@me.com>
+
+DOCUMENTATION = '''
+---
+module: latest_release
+short_description: returns a download url for the latest release of a given github repository
+'''
+
+import json
+import urllib2
+import re
+
+GITHUB_RELEASES_URL = "https://api.github.com/repos/%s/%s/releases"
+GITHUB_RELEASE_ASSETS_URL = "https://api.github.com/repos/%s/%s/releases/%s/assets"
+
+def fetch_latest_release(params):
+    data = json.load(urllib2.urlopen(GITHUB_RELEASES_URL % tuple([params['username'], params['repo']])))
+    return data[0]
+
+def asset_url(params):
+    release = fetch_latest_release(params)
+    data = json.load(urllib2.urlopen(GITHUB_RELEASE_ASSETS_URL % tuple([params['username'], params['repo'], release['id']])))
+    prog = re.compile(".*%s.*" % params.get('release_name', '.*'))
+    results = [a['browser_download_url'] for a in data if prog.match(a['name']) != None]
+    return results[0]
+
+def main():
+    # match releases by <os>-<arch>
+    module = AnsibleModule(argument_spec = dict(
+      username     = dict(default=None, required=True, type='str'),
+      repo         = dict(default=None, required=True, type='str'),
+      release_name = dict(default=None, required=False, type='str')
+    ))
+
+    result = {}
+    result['changed'] = True
+    result['ansible_facts'] = {
+      'github': {
+        'download_url': asset_url(module.params)
+      }
+    }
+
+    module.exit_json(**result)
+
+# this is magic, see lib/ansible/module_common.py
+#<<INCLUDE_ANSIBLE_MODULE_COMMON>>
+
+main()

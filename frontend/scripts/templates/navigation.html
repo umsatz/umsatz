@@ -1,0 +1,39 @@
+<ul class="title-area">
+  <li class="name">
+    <h1><a href="#">Umsatz</a></h1>
+  </li>
+  <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+</ul>
+
+<section class="top-bar-section">
+  <ul class="left">
+    <li class="has-dropdown fiscalPeriods">
+      <a href="#">{{ t('fiscalPeriods.selector') }}</a>
+
+      <ul class="dropdown">
+        {{#fiscalPeriods}}
+        <li class="no-click" class="show-fiscalPeriod has-dropdown not-click">
+          <a href="/#/fiscalPeriods/{{ id }}">
+            {{ name }}
+          </a>
+          <ul class="dropdown">
+            <li>
+              <a href="/#/fiscalPeriods/{{ id }}/export">{{ t('fiscalPeriods.overview.actions.export') }}</a>
+            </li>
+          </ul>
+        </li>
+        {{/fiscalPeriods}}
+      </ul>
+    </li>
+  </ul>
+
+  <ul class="right">
+    <li class="has-dropdown">
+      <a href="#"><i class="fi-wrench"></i></a>
+      <ul class="dropdown">
+        <li><a href="/#/settings">Settings</a></li>
+        <li><a href="/#/backups">Backups</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>

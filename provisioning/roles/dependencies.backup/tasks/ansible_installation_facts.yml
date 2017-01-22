@@ -1,0 +1,9 @@
+- shell: which ansible-playbook
+  register: playbook
+
+- shell: which psql
+  register: psql
+
+- set_fact:
+    ansible_playbook: "{{ playbook.stdout }}"
+    psql_prompt: "{{ psql.stdout }}"

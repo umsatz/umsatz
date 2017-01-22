@@ -1,0 +1,14 @@
+- name: lookup latest release from github
+  action: latest_release username="{{ github_username }}" repo="{{ github_repo }}" release_name="{{ github_release_name }}"
+
+- name: download latest release
+  get_url:
+    url: "{{ github.download_url }}"
+    dest: /tmp
+  register: github_download
+
+- name: extract release
+  unarchive:
+    copy: no
+    src: "{{ github_download.dest }}"
+    dest: "{{ build_path }}"

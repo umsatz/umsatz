@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="large-8 large-offset-2 columns end">
+    <h2>{{ t('signup.headline') }}</h2>
+    <p>{{ t('signup.information') }}</p>
+  </div>
+
+  <form>
+    <div class="large-4 large-offset-2 columns">
+      <label for="firstname">{{ t('signup.firstname') }}</label>
+      <input type="text" name="firstname" value="{{ signup.firstname }}" />
+    </div>
+
+    <div class="large-4 columns end">
+      <label for="lastname">{{ t('signup.lastname') }}</label>
+      <input type="text" name="lastname" value="{{ signup.lastname }}" />
+    </div>
+
+    <div class="large-4 large-offset-2 columns">
+      <label for="company">{{ t('signup.company') }}</label>
+      <input type="text" name="company" value="{{ signup.company }}" />
+    </div>
+
+    <div class="large-4 columns end">
+      <label for="taxId">{{ t('signup.tax_id') }}</label>
+      <input type="text" name="taxId" value="{{ signup.tax_id }}" />
+    </div>
+
+    <div class="large-4 large-offset-2 columns">
+      <label for="email">{{ t('signup.email') }}</label>
+      <input type="email" name="email" value="{{ signup.email }}" />
+    </div>
+
+    <div class="large-4 columns end">
+      <label for="password">{{ t('signup.password') }}</label>
+      <input type="password" name="password" value="{{ signup.password }}" />
+    </div>
+
+    {{#qr}}
+      <div class="large-8 large-offset-2 columns end">
+        <p>{{ t('signup.totp_information') }}</p>
+        <img src="{{ href }}" />
+      </div>
+
+      <div class="large-8 large-offset-2 columns end">
+        <label for="totp">{{ t('login.totp') }}</label>
+        <input type="text" name="totp" value="{{ signup.totp }}" />
+      </div>
+
+      <div class="large-8 large-offset-2 columns end">
+        <button on-click="signup">{{ t('signup.submit') }}</button>
+      </div>
+    {{else}}
+      <div class="large-8 large-offset-2 columns end">
+        <button on-click="validate">{{ t('signup.submit') }}</button>
+      </div>
+    {{/qr}}
+
+  </form>
+</div>

@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="large-12 columns">
+    <h2>{{ t('exports.headline', { name: fiscalYear.name }) }}</h2>
+  </div>
+
+  <div class="large-6 columns">
+    <pre>
+      <textarea
+        name="template"
+        spellcheck="false"
+        autocomplete="off"
+        style="height: 660px;"
+        value="{{ template }}"></textarea>
+    </pre>
+    <a class="button tiny" on-click="download">Download</a>
+  </div>
+  <div class="large-6 columns">
+    <iframe style="width: 100%; height: 660px;" srcdoc="{{ preview }}"></iframe>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+server {
+  listen       0.0.0.0:80 default_server;
+  server_name  _;
+  merge_slashes on;
+  client_max_body_size 10M;
+
+  allow   {{ ansible_eth0.ipv4.address|split('.')|take(3)|join('.') }}.0/24;
+  deny    all;
+
+  location / {
+    root {{ home_directory }}/{{ frontend_path }};
+  }
+
+  # umsatz api
+  location /api/ {
+    include proxy_params;
+    proxy_intercept_errors off;
+    proxy_set_header X-Requested-Uri $request_uri;
+
+    proxy_pass http://127.0.0.1:8080/;
+  }
+
+  # currency exchange rates
+  location /rates/ {
+    include proxy_params;
+    proxy_intercept_errors off;
+    proxy_set_header X-Requested-Uri $request_uri;
+
+    proxy_pass http://127.0.0.1:8081/;
+  }
+
+  # umsatz backups api
+  location /api/backups/ {
+    include proxy_params;
+    proxy_intercept_errors off;
+    proxy_set_header X-Requested-Uri $request_uri;
+
+    proxy_pass http://127.0.0.1:8082/;
+  }
+
+  # ent - file upload and download
+  location /upload/ {
+    include proxy_params;
+    proxy_intercept_errors off;
+
+    proxy_pass http://127.0.0.1:5555/umsatz/;
+  }
+
+  location /download/ {
+    include proxy_params;
+    proxy_intercept_errors off;
+
+    proxy_pass http://127.0.0.1:5555/umsatz/;
+  }
+}

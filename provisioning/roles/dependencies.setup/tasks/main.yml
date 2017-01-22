@@ -1,0 +1,53 @@
+---
+- name: install common dependencies
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+    update-cache: yes
+  with_items:
+    - python
+    - python-psycopg2
+    - python-software-properties
+    - g++
+    - build-essential
+    - make
+    - vim
+    - htop
+    - git-core
+    - mercurial
+    - gettext
+    - libpq-dev
+    - curl
+    - cmake
+    - python-dev
+    - zlib1g-dev
+    - libssl-dev
+    - unzip
+
+- name: create umsatz user
+  user:
+    name: "{{ user }}"
+    home: "{{ home_directory }}"
+    createhome: yes
+    shell: "/bin/bash"
+    state: present
+
+- authorized_key:
+    user: "{{ user }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    manage_dir: no
+
+- file:
+    path: "{{ home_directory }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0750
+    recurse: yes
+
+- name: allow sudo access to supervisorctl
+  lineinfile:
+    dest: "/etc/sudoers"
+    insertafter: EOF
+    regexp: "^{{ user }}"
+    line: "{{ user }} ALL=NOPASSWD: /usr/bin/supervisorctl"
+    state: present

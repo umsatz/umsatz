@@ -1,0 +1,19 @@
+{% for group in supervisor_groups %}
+{% for program in group.programs %}
+[program:{{ program.name }}]
+command={{ program.command }}
+autostart=true
+autorestart=true
+stopsignal=QUIT
+stdout_logfile={{ program.log_path }}/{{ program.name }}.log
+stderr_logfile={{ program.log_path }}/{{ program.name }}.err.log
+user={{ user }}
+directory={{ program.directory }}
+environment={% for env in program.env|default({}) %}{{ env.name }}="{{ env.value }}",{% endfor %}PORT={{ program.port }}
+
+{% endfor %}
+
+[group:{{ group.name }}]
+programs={{ group.programs|map(attribute='name')|join(', ') }}
+
+{% endfor %}

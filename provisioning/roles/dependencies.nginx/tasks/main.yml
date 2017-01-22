@@ -1,0 +1,41 @@
+---
+- apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "C300EE8C"
+    state: present
+
+- apt_repository:
+    repo: deb http://ppa.launchpad.net/nginx/stable/ubuntu lucid main
+    state: present
+    update_cache: yes
+  when: ansible_architecture == 'x86_64'
+
+- apt:
+    pkg: nginx
+    state: latest
+    update_cache: yes
+
+- name: remove default site
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/nginx/sites-enabled/default
+    - /etc/nginx/sites-available/default
+
+- name: add www-data to $users group
+  user:
+    name: www-data
+    groups: "{{ user }},www-data"
+
+- template:
+    src: nginx.logrotate.j2
+    dest: /etc/logrotate.d/nginx
+    owner: root
+    group: root
+    mode: 0544
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started

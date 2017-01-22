@@ -1,0 +1,23 @@
+user: umsatz
+home_directory: "/home/{{ user }}"
+
+database: "{{ user }}"
+database_user: "{{ user }}"
+database_password: "{{ user }}"
+
+go_path: "{{ home_directory }}/go"
+
+upload_archive: uploads.tar
+database_dump: dump.sql
+database_archive: dump.tar
+
+provisioning_directory: "{{ home_directory }}/provisioning"
+backups_shared_directory: "{{ home_directory }}/backup/shared"
+backup_config_path: "{{ backups_shared_directory }}/backup.config.json"
+backups_directory: "{{ backups_shared_directory }}/data"
+uploads_directory: "{{ home_directory }}/ent/shared/uploads"
+
+os_system: "{{ ansible_system|lower }}"
+os_arch: arm
+
+github_username: "umsatz"

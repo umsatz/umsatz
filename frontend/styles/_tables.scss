@@ -1,0 +1,49 @@
+table tr th, table tr td {
+  padding: 0.3rem 0.625rem
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #dddddd;
+
+  th.cleared, td.cleared {
+    background: white;
+  }
+
+  tbody tr:hover {
+    background-color: #cdcdcd;
+  }
+}
+
+$border-color: #ddd;
+
+table.fiscalPeriods {
+  tr.archived {
+    background: #efefef;
+  }
+}
+
+table.positions {
+  border: none;
+  border-right: 1px solid $border-color;
+  th {
+    border-top: 1px solid $border-color;
+    &.month {
+      border-top: none;
+      border-right: 1px solid $border-color;
+    }
+  }
+  tfoot td {
+    border-bottom: 1px solid $border-color;
+  }
+  td.month {
+    border-top: none;
+    border-bottom: none;
+    border-right: 1px solid $border-color;
+  }
+}
+
+div.month {
+  margin-left: 50px;
+}

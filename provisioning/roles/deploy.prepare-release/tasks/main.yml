@@ -1,0 +1,42 @@
+---
+- action: deployment_facts
+
+- name: create shared directories
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "{{ user }}"
+    group: "{{ group | default(user) }}"
+    mode: "0755"
+  with_items:
+    - "{{ default_directories }}"
+    - "{{ directories }}"
+
+- name: create configuration files from templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.user | default(user) }}"
+    group: "{{ item.group | default(user) }}"
+    mode: "{{ item.mode | default(0600) }}"
+  with_items:
+    - "{{ templates }}"
+
+- file:
+    path: "{{ build_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ user }}"
+    group: "{{ group | default(user) }}"
+    recurse: yes
+
+- name: symlink shared files to build directory
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+    force: yes
+  with_items:
+    - "{{ default_symlinks }}"
+    - "{{ symlinks }}"
+  when: item is defined

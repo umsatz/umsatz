@@ -1,0 +1,154 @@
+{
+  "accountOverview": {
+    "headline": "Kontoübersicht für %{name}"
+  },
+
+  "or": "oder",
+  "actions": {
+    "save": "Speichern",
+    "cancel": "abbrechen"
+  },
+
+  "settings": {
+    "headline": "Einstellungen",
+    "submit": "Speichern"
+  },
+
+  "login": {
+    "headline": "Login für %{company}",
+    "submit": "Einloggen",
+    "password": "Passwort",
+    "totp": "OTP Token"
+  },
+
+  "exports": {
+    "headline": "PDF-Export für %{name}"
+  },
+
+  "signup": {
+    "headline": "Registrierung",
+    "information": "Um umsatz zu verwenden müssen Sie sich auf Ihrem Raspberry PI registrieren. Die Registrierung erfolgt nur lokal und die angegebenen Informationen werden nie in das Internet übermittelt.",
+    "totp_information": "Um die Registrierung abzuschließen müssen Sie den folgenden QR-Code scannen & eines Ihrer OTP Token angeben.",
+
+    "firstname": "Vorname",
+    "lastname": "Nachname",
+    "company": "Firma",
+    "tax_id": "Umsatzsteuer-ID",
+    "email": "E-Mail",
+    "password": "Passwort",
+
+    "submit": "Registrieren"
+  },
+
+  "fiscalPeriods": {
+    "selector": "Abrechnungszeiträume",
+
+    "overview": {
+      "headline": "Abrechnungszeiträume",
+      "actions": {
+        "new": "Neuen Abrechnungszeitraum",
+        "export": "Exportieren"
+      },
+      "listing": {
+        "name":          "Name",
+        "startsAt":      "Von",
+        "endsAt":        "Bis",
+        "archived":      "Archiviert",
+        "positionCount": "# Positionen",
+        "totalExpense":  "∑ Ausgaben",
+        "totalIncome":   "∑ Einnahmen"
+      }
+    },
+
+    "headline": "Buchungen in %{name}",
+
+    "edit": {
+      "title": "Buchungszeitraum"
+    },
+
+    "attributes": {
+      "name": "Name",
+      "startsAt": "Von",
+      "endsAt": "Bis",
+      "archived": "Archiviert"
+    }
+  },
+
+  "backups": {
+    "headline": "Backups",
+    "actions": {
+      "new": "Backup erstellen"
+    },
+    "listing": {
+      "createdAt": "Erstellt Am"
+    }
+  },
+
+  "positions": {
+    "overview": {
+      "actions": {
+        "new": "Neue Buchung anlegen"
+      },
+      "listing": {
+        "invoiceDate": "Rechnungsdatum",
+        "bookingDate": "Buchungsdatum",
+        "invoiceNumber": "Rechnungsnummer",
+        "description": "Beschreibung",
+        "account":     "Buchungskonto",
+        "totalAmount": "Betrag",
+        "totalVatAmount": "MwSt.",
+        "income": "Einnahmen",
+        "expenses": "Ausgaben"
+      }
+    },
+
+    "attributes": {
+      "invoiceNumber": "Rechnungsnummer",
+      "invoiceDate": "Rechnungsdatum",
+      "bookingDate": "Buchungsdatum",
+      "accountCodeFrom": "Konto von",
+      "accountCodeTo": "Konto nach",
+      "description": "Beschreibung",
+      "type": "Art",
+      "totalAmount": "Betrag",
+      "tax": "Umsatzsteuer",
+      "attachment": "Anhang"
+    },
+
+    "tax": {
+      "notApplicable": "nicht anwendbar"
+    },
+
+    "exchangeRate": "Umrechnungskurs",
+
+    "type": {
+      "income": "Einnahme",
+      "expense": "Ausgabe"
+    }
+  },
+
+  "date": {
+    "month_abbrs": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "Mai",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Okt",
+      "11": "Nov",
+      "12": "Dez"
+    }
+  },
+
+  "language": {
+    "selector": "Sprachauswahl",
+    "options": {
+      "de": "Deutsch",
+      "en": "Englisch"
+    }
+  }
+}

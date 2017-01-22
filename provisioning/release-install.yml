@@ -1,0 +1,188 @@
+---
+- hosts: raspberry
+  name: install common dependencies
+  sudo: true
+  tags: provision
+  vars:
+    backup_repository: https://github.com/umsatz/provisioning.git
+  roles:
+    -
+      role: dependencies.bootstrap
+      when: ansible_architecture == 'armv6l'
+    - dependencies.setup
+    - dependencies.postgres
+    - dependencies.supervisor
+    - dependencies.backup
+    - dependencies.nginx
+
+- hosts: raspberry
+  remote_user: "{{ user }}"
+  name: deploy ent http file storage
+  tags:
+    - deploy
+    - deploy-ent
+  vars:
+    deploy_to: "{{ home_directory }}/ent"
+    shared_path: "{{ home_directory }}/ent/shared"
+    directories:
+      - "{{ shared_path }}/uploads"
+      - "{{ shared_path }}/policies"
+    templates:
+      - { src: "templates/entpolicy.j2", dest: "{{ shared_path }}/policies/umsatz.entpolicy" }
+    supervisor_group_name: ent
+    github_repo: ent
+    github_release_name: "{{ os_system }}-{{ os_arch }}"
+  roles:
+    - deploy.prepare-release
+    - deploy.archived-release
+    - nicolai86.finalize-release
+    - deploy.restart
+
+- hosts: raspberry
+  remote_user: "{{ user }}"
+  name: deploy umsatz currency exchange api
+  tags:
+    - deploy
+    - deploy-currency-api
+  vars:
+    deploy_to: "{{ home_directory }}/currency"
+    shared_path: "{{ home_directory }}/currency/shared"
+    directories:
+      - "{{ shared_path }}/data"
+    github_repo: currency-exchange
+    github_release_name: "{{ os_system }}-{{ os_arch }}"
+    supervisor_group_name: currency
+  roles:
+    - deploy.prepare-release
+    - deploy.archived-release
+    - nicolai86.finalize-release
+    - dependencies.initial-currency-import
+    -
+      role: deploy.go-cron
+      jobs:
+        -
+          name: download currency informations
+          job: "curl http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml -o {{ shared_path }}/euro-hist.xml"
+          hour: 20
+          minute: 00
+    - deploy.restart
+
+- hosts: raspberry
+  remote_user: "{{ user }}"
+  name: deploy umsatz backup api
+  tags:
+    - deploy
+    - deploy-backup-api
+  vars:
+    deploy_to: "{{ home_directory }}/backup"
+    shared_path: "{{ home_directory }}/backup/shared"
+    github_repo: backup
+    github_release_name: "{{ os_system }}-{{ os_arch }}"
+    supervisor_group_name: backup
+  roles:
+    - deploy.prepare-release
+    - deploy.archived-release
+    - nicolai86.finalize-release
+    - deploy.restart
+
+- hosts: raspberry
+  remote_user: "{{ user }}"
+  name: deploy umsatz api
+  tags:
+    - deploy
+    - deploy-api
+  vars:
+    deploy_to: "{{ home_directory }}/api"
+    shared_path: "{{ home_directory }}/api/shared"
+    github_repo: api
+    github_release_name: "{{ os_system }}-{{ os_arch }}"
+    supervisor_group_name: api
+  roles:
+    - deploy.prepare-release
+    - deploy.archived-release
+    - nicolai86.finalize-release
+    - deploy.restart
+
+- hosts: raspberry
+  remote_user: "{{ user }}"
+  name: deploy umsatz frontend
+  tags:
+    - deploy
+    - deploy-frontend
+  vars:
+    github_repo: frontend
+    github_release_name: ""
+    deploy_to: "{{ home_directory }}/frontend"
+  roles:
+    - deploy.prepare-release
+    - deploy.archived-release
+    - nicolai86.finalize-release
+
+- hosts: raspberry
+  name: finishing touches
+  sudo: true
+  vars:
+    frontend_path: frontend/current
+  tags:
+    - provision
+    - deploy
+    - deploy-frontend
+    - deploy-finish
+    - deploy-nginx
+
+  roles:
+    - deploy.nginx
+
+- hosts: raspberry
+  name: finishing touches
+  sudo: true
+  tags:
+    - deploy
+    - deploy-finish
+
+  pre_tasks:
+    - include: roles/dependencies.backup/tasks/ansible_installation_facts.yml
+
+  roles:
+    -
+      role: deploy.supervisor
+      supervisor_groups:
+        -
+          name: api
+          programs:
+            -
+              name: api
+              directory: "{{ home_directory }}/api/current"
+              command:   "{{ home_directory }}/api/current/api -http.addr=127.0.0.1:8080 -currency.addr=127.0.0.1:8081"
+              log_path:  "{{ home_directory }}/api/shared/log"
+              port: 8080
+              env:
+                - { name: "REV_DSN", value: "user={{ database_user }} dbname={{ database }} password={{ database_password }} sslmode=disable" }
+        -
+          name: backup
+          programs:
+            -
+              name: backup
+              directory: "{{ home_directory }}/backup/current"
+              command:   "{{ home_directory }}/backup/current/api -http.addr=127.0.0.1:8082 -backup.root={{ backups_directory }} -backup.config={{ backup_config_path }} -ansible.playbook={{ ansible_playbook }} -provisioning.directory={{ provisioning_directory }}"
+              log_path:  "{{ home_directory }}/backup/shared/log"
+              port: 8082
+        -
+          name: currency
+          programs:
+            -
+              name: currency
+              directory: "{{ home_directory }}/currency/current"
+              command:   "{{ home_directory }}/currency/current/api -http.addr=127.0.0.1:8081 -historic.data={{ home_directory }}/currency/shared/data/euro-hist.xml"
+              log_path:  "{{ home_directory }}/currency/shared/log"
+              port: 8081
+
+        -
+          name: ent
+          programs:
+            -
+              name: ent
+              port: 5555
+              directory: "{{ home_directory }}/ent/current"
+              command:   "{{ home_directory }}/ent/current/ent -fs.root={{ uploads_directory }} -provider.dir={{ home_directory }}/ent/shared/policies -http.addr=127.0.0.1:5555"
+              log_path:  "{{ home_directory }}/ent/shared/log"

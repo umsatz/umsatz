@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    archive: "backup-{{ ansible_date_time.date }}.tar"
+  tasks:
+    - name: archive uploads
+      command: chdir="{{ upload_directory }}" tar -cf {{ backups_directory }}/{{ upload_archive }} .
+
+    - name: dump database
+      command: chdir="{{ backups_directory }}" pg_dump -U {{ database_user }} -h localhost --clean --file={{ database_dump }}
+
+    - name: compress the database dump
+      command: chdir="{{ backups_directory }}" tar -cf  {{ database_archive }} {{ database_dump }} --remove-files
+
+    - name: compress database dump and uploads
+      command: chdir="{{ backups_directory }}" tar -cf  {{ archive }} {{ database_archive }} {{ upload_archive }} --remove-files
+
+    - stat:
+        path: /mnt/backups
+      register: external_backups_path
+
+    - name: duplicate backup if external backups disc exists
+      command: cp "{{ backups_directory }}/{{ archive }}" "/mnt/backups/{{ archive }}"
+      when: external_backups_path.stat.exists
+
+    - name: cleanup old releases on disc
+      shell: ls -dt {{ backups_directory }}/* | tail -n +10 | xargs rm -fr
+
+    - name: cleanup old releases on backup medium
+      shell: ls -dt /mnt/backups/* | tail -n +50 | xargs rm -fr

@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="large-12 columns">
+    <div class="month">
+      <h2>{{ t('fiscalPeriods.headline', { name: fiscalYear.name }) }}</h2>
+
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="row collapse">
+            <div class="small-3 columns">
+              <a href="/#/fiscalPeriods/{{ fiscalYear.id }}/positions/new" class="tiny button new-period">{{ t('positions.overview.actions.new') }}</a>
+            </div>
+            <div class="small-1 columns">
+              {{#searchQuery}}
+              <a href="#" class="button prefix alert" on-click="clearSearch">
+                <i class="fi-minus"></i>
+              </a>
+              {{/searchQuery}}
+              &nbsp;
+            </div>
+            <div class="small-8 columns">
+              <input type="text" placeholder="Suche" value="{{ searchQuery }}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="{{ fiscalYear.year }} positions large-12">
+      <thead>
+        <tr>
+          <th width="50" class="cleared month"></th>
+          <th width="100">{{ t('positions.overview.listing.invoiceDate') }}</th>
+          <th width="100">{{ t('positions.overview.listing.bookingDate') }}</th>
+          <th width="100">{{ t('positions.overview.listing.invoiceNumber') }}</th>
+          <th>{{ t('positions.overview.listing.description') }}</th>
+          <th width="125">{{ t('positions.overview.listing.account') }}</th>
+          <th width="130">{{ t('positions.overview.listing.totalAmount') }}</th>
+          <th width="130">{{ t('positions.overview.listing.totalVatAmount') }}</th>
+          <th width="70"></th>
+          <th width="50"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{# filtered:index}}
+          <tr>
+            <td class="cleared month"><month month="{{ months[index] }}"></month></td>
+            <td>{{ shortDate(invoiceDate) }}</td>
+            <td>{{ shortDate(bookingDate) }}</td>
+            <td>{{ invoiceNumber }}</td>
+            <td>{{ description }}</td>
+            <td>{{ accountCodeFrom }} -> {{ accountCodeTo }}</td>
+            <td><currency amountCents="{{ totalAmountCents }}" type="{{ type }}" currency="{{ currency }}"/></td>
+            <td><currency amountCents="{{ this.totalVatAmountCents() }}" type="{{ vatType }}" currency="{{ currency }}"/></td>
+            <td>{{tax}} %</td>
+            <td class="actions">
+              <a href="#/fiscalPeriods/{{ fiscalYear.id }}/positions/{{ id }}/edit" data-method="show">
+                <i class="fi-widget"></i>
+              </a>
+              <a href="#/fiscalPeriods/{{ fiscalYear.id }}/positions/{{ id }}/clone">
+                <i class="fi-page-copy"></i>
+              </a>
+              <a on-click="delete" class="alert">
+                <i class="fi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        {{/filtered}}
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td class="cleared month">
+          </td>
+          <td colspan="2">
+            {{ t('positions.overview.listing.income') }}: <currency amountCents='{{ filtered.totalIncome() }}'/>
+          </td>
+          <td colspan="3">
+            {{ t('positions.overview.listing.expenses') }}: <currency amountCents='{{ filtered.totalExpense() }}'/>
+          </td>
+          <td colspan="1"><currency amountCents='{{ filtered.totalAmount() }}'/></td>
+          <td colspan="3">
+            <!-- <currency type="income" amountCents='{{ totalIncomeVatAmount( filtered ) }}'/> /
+            <currency type="expense" amountCents='{{ totalExpenseVatAmount( filtered ) }}'/>
+            <br> -->
+            <currency amountCents='{{ filtered.totalVatAmount() }}'/>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

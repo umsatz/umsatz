@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="large-8 large-offset-2 columns end">
+    <h2>{{ t('login.headline', { company: registration.company }) }}</h2>
+  </div>
+  <form>
+    <div class="large-8 large-offset-2 columns end">
+      <label for="password">{{ t('login.password') }}</label>
+      <input type="password" name="password" value="{{ login.password }}" />
+    </div>
+    <div class="large-8 large-offset-2 columns end">
+      <label for="totp">{{ t('login.totp') }}</label>
+      <input type="text" name="totp" value="{{ login.totp }}" />
+    </div>
+    <div class="large-8 large-offset-2 columns end">
+      <button on-click="validate">{{ t('login.submit') }}</button>
+    </div>
+  </form>
+</div>

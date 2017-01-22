@@ -1,0 +1,7 @@
+{
+  "name": "umsatz provisioning",
+  "version": "0.0.1",
+  "dependencies": {
+    "nicolai86.prepare-finalize": "nicolai86/ansible-finalize-release"
+  }
+}

@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="large-8 large-offset-2 columns end">
+    <h2>{{ t('settings.headline') }}</h2>
+  </div>
+
+  <div class="large-12 columns">
+    <form>
+      <div class="large-4 large-offset-2 columns">
+        <label for="firstname">{{ t('signup.firstname') }}</label>
+        <input type="text" name="firstname" value="{{ settings.firstname }}" />
+      </div>
+
+      <div class="large-4 columns end">
+        <label for="lastname">{{ t('signup.lastname') }}</label>
+        <input type="text" name="lastname" value="{{ settings.lastname }}" />
+      </div>
+
+      <div class="large-4 large-offset-2 columns">
+        <label for="company">{{ t('signup.company') }}</label>
+        <input type="text" name="company" value="{{ settings.company }}" />
+      </div>
+
+      <div class="large-4 columns end">
+        <label for="taxId">{{ t('signup.tax_id') }}</label>
+        <input type="text" name="taxId" value="{{ settings.tax_id }}" />
+      </div>
+
+      <div class="large-4 large-offset-2 columns end">
+        <label for="email">{{ t('signup.email') }}</label>
+        <input type="email" name="email" value="{{ settings.email }}" />
+      </div>
+
+      <div class="large-8 large-offset-2 columns end">
+        <button on-click="save">{{ t('settings.submit') }}</button>
+      </div>
+
+    </form>
+  </div>
+</div>

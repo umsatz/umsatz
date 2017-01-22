@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="large-12 columns">
+    <h2>{{ t('fiscalPeriods.overview.headline') }}</h2>
+    <div class="row">
+      <div class="large-12 columns">
+        <a href="/#/fiscalPeriods/new" class="tiny button new-fiscalPeriod">{{ t('fiscalPeriods.overview.actions.new') }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="large-12 columns">
+    <table class="large-12 fiscalPeriods">
+      <thead>
+        <tr>
+          <th width="50">{{ t('fiscalPeriods.overview.listing.name') }}</th>
+          <th width="50">{{ t('fiscalPeriods.overview.listing.startsAt') }}</th>
+          <th width="50">{{ t('fiscalPeriods.overview.listing.endsAt') }}</th>
+          <th width="50">{{ t('fiscalPeriods.overview.listing.positionCount') }}</th>
+          <th width="50">{{ t('fiscalPeriods.overview.listing.totalIncome') }}</th>
+          <th width="50">{{ t('fiscalPeriods.overview.listing.totalExpense') }}</th>
+          <th width="50"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#fiscalPeriods}}
+          <tr class="{{#archived}}archived{{/archived}}">
+            <td>{{ name }}</td>
+            <td>{{ startsAt }}</td>
+            <td>{{ endsAt }}</td>
+            <td>{{ positionsCount }}</td>
+            <td><currency type="income" amountCents="{{ totalIncomeCents }}" currency="EUR"/></td>
+            <td><currency type="expense" amountCents="{{ totalExpenseCents }}" currency="EUR"/></td>
+            <td>
+              <a href="#/fiscalPeriods/{{ id }}/edit" data-method="show" class="edit-fiscalPeriod">
+                <i class="fi-widget"></i>
+              </a>
+              <a on-click="delete" class="alert delete-fiscalPeriod">
+                <i class="fi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        {{/fiscalPeriods}}
+      </tbody>
+    </table>
+  </div>
+</div>

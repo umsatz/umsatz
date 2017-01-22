@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="large-6 columns large-offset-3 end">
+    <form class="fiscal-period" on-submit="save">
+
+      <div class="row">
+        <div class="large-12 columns">
+          <h2>{{ t('fiscalPeriods.edit.title') }}</h2>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-12 columns {{#period.hasErrorOn('name')}}error{{/period}}">
+          <label for="name">{{ t('fiscalPeriods.attributes.name') }}</label>
+          <input type="text" id="name" placeholder="z.b. 2014" value="{{ period.name }}">
+          {{#period.hasErrorOn('name')}}
+          <small class="error">{{ period.errors.name }}</small>
+          {{/period}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-5 columns {{#period.hasErrorOn('startsAt')}}error{{/period}}">
+          <label for="startsAt">{{ t('fiscalPeriods.attributes.startsAt') }}</label>
+          <input type="date" id="startsAt" value="{{ period.startsAt }}">
+          {{#period.hasErrorOn('startsAt')}}
+          <small class="error">{{ period.errors.startsAt }}</small>
+          {{/period}}
+        </div>
+        <div class="large-5 columns {{#period.hasErrorOn('endsAt')}}error{{/period}}">
+          <label for="endsAt">{{ t('fiscalPeriods.attributes.endsAt') }}</label>
+          <input type="date" id="endsAt" value="{{ period.endsAt }}">
+          {{#period.hasErrorOn('endsAt')}}
+          <small class="error">{{ period.errors.endsAt }}</small>
+          {{/period}}
+        </div>
+        <div class="large-2 columns">
+          <label for="archived">{{ t('fiscalPeriods.attributes.archived') }}</label>
+          <input type="checkbox" id="archived" checked="{{period.archived}}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="large-12 columns">
+          <div class="form-actions">
+            <input class="tiny button" type="submit" value="{{ t('actions.save') }}"> {{ t('or') }} <a on-click="cancel" class="alert">{{ t('actions.cancel') }}</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

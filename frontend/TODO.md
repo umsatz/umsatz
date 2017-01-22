@@ -1,0 +1,4 @@
+- wenn Buchungsart Ausgabe, dann Zahlungsoption anzeigen -> interne verknüpfung mit weiteren Konto herstellen
+- ein und ausgabe ist überflüssig, ergibt sich aus dem Konto
+- eingabe für Buchungsdatum
+- übersicht nach Konto & Jahr

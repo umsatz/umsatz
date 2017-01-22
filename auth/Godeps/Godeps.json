@@ -1,0 +1,14 @@
+{
+	"ImportPath": "github.com/umsatz/auth",
+	"GoVersion": "go1.4.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/boombuler/barcode",
+			"Rev": "5a0018c9b8efcb51847fa578720c831c8059d230"
+		},
+		{
+			"ImportPath": "github.com/pquerna/otp",
+			"Rev": "3c48a72899fb0ff6401a8af80651132971ea6fa7"
+		}
+	]
+}

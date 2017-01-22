@@ -1,0 +1,50 @@
+@charset "utf-8";
+// Global Foundation Settings
+@import "settings";
+@import "normalize";
+
+// Comment out this import if you are customizing you imports below
+@import "foundation";
+
+// list styles
+ul, ol {
+  margin-left: 20px;
+
+  &.features {
+    margin-left: 0;
+    list-style: none;
+
+    li:before {
+      content: "✓ ";
+    }
+  }
+}
+
+// navigation bar
+.top-bar {
+  width: 100%;
+}
+
+.active {
+  background:  darken($primary-color, 3%) !important;
+  color: #fff !important;
+  text-decoration: underline !important;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.row {
+  &.header {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 62.5%;
+  }
+}
+
+// footer
+footer {
+  margin-bottom: 75px;
+}

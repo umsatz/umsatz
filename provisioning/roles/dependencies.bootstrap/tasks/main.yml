@@ -1,0 +1,63 @@
+---
+- raw: sudo apt-get install vim python-apt -y
+
+- apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - build-essential
+    - python-dev
+    - python-pip
+    - rpi-update
+
+- pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - fstab
+
+# increase SD Card lifespan by configuring / and /boot to be mounted with noatime option
+- noatime: name="/"
+  register: noatime_root
+
+- noatime: name="/boot"
+  register: noatime_boot
+
+# set gpu memory share to lower bound (16mb)
+- action: rpi_config
+
+- command: mount -o remount,rw /boot
+
+- lineinfile:
+    dest: /boot/config.txt
+    regexp: "^#?gpu_mem="
+    line: gpu_mem=16
+    state: present
+  register: rpi_config_gpu_mem
+
+# automatically repair filesystems with inconsistencies during boot
+- lineinfile:
+    dest: /etc/default/rcS
+    regexp: FSCKFIX
+    line: FSCKFIX=yes
+    state: present
+
+# update raspberry pi firmware
+- command: rpi-update
+  register: rpi_update
+
+- command: mount -o remount,r /boot
+
+- name: restart machine
+  command: shutdown -r now "Ansible updates triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
+  when: noatime_boot|changed or noatime_root|changed or rpi_config_gpu_mem|changed or rpi_update.stdout.find('A reboot is needed') != -1
+
+- name: waiting for server to come back
+  local_action: >
+    wait_for host="{{ inventory_hostname }}" port="{{ ansible_ssh_port }}" search_regex=SSH delay=10 timeout=600
+  when: noatime_boot|changed or noatime_root|changed
+  sudo: false

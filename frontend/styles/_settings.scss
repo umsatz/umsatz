@@ -1,0 +1,15 @@
+$base-font-size: 100%;
+$include-html-classes: true;
+$include-html-global-classes: true;
+
+$row-width: 100%;
+$primary-color: #42A5F5;
+$secondary-color: #33363C;
+$alert-color: #E33F40;
+$success-color: #2BB29D;
+$topbar-bg: #42A5F5 !default;
+$include-html-top-bar-classes: true;
+
+$topbar-link-bg-hover: darken($topbar-bg, 3%);
+$topbar-link-bg-color-hover: darken($topbar-bg, 3%) !default;
+$topbar-dropdown-link-bg: darken($topbar-bg, 5%) !default;

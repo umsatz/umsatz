@@ -1,0 +1,14 @@
+{
+	"ImportPath": "github.com/umsatz/api",
+	"GoVersion": "go1.4.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Rev": "73672c22431294bd2d012742dfc488523cc631bd"
+		},
+		{
+			"ImportPath": "github.com/nicolai86/sql-migrate",
+			"Rev": "b1ca066aa6eb5419f0fc89379bf17c20d6355461"
+		}
+	]
+}
